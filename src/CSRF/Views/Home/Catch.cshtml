@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Catch";
+    var log = ViewBag.Log as List<string> ?? new List<string>();
+}
+
+<div class="jumbotron">
+    <ul>
+    @foreach (var entry in log)
+    {
+        <li>@entry</li>
+    }
+    </ul>
+</div>

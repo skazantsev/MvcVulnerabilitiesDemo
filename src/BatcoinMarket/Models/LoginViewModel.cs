@@ -8,7 +8,7 @@ namespace BatcoinMarket.Models
     {
         public LoginViewModel()
         {
-            Users = Accounts.All;
+            Users = Accounts.List;
         }
 
         [Required]

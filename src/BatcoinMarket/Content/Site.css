@@ -22,3 +22,13 @@ select,
 textarea {
     max-width: 280px;
 }
+
+li a,
+li a:hover,
+li a:visited,
+li a:focus {
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    color: #555555;
+}

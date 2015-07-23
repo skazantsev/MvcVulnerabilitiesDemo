@@ -56,5 +56,10 @@ namespace BatcoinMarket.Controllers
 
             return PartialView("_AccountInfo", Accounts.GetCurrent());
         }
+
+        public ActionResult GetSensetiveInfo()
+        {
+            return Json(new {data = Accounts.GetCurrent().SensetiveInfo}, JsonRequestBehavior.AllowGet);
+        }
     }
 }

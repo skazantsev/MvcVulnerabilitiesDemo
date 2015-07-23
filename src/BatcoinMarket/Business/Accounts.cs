@@ -6,21 +6,32 @@ namespace BatcoinMarket.Business
 {
     public static class Accounts
     {
-        public static List<Account> All = new List<Account>
+        public static readonly string StoreKey = "Accounts";
+
+        public static List<Account> List { get; private set; }
+
+        static Accounts()
         {
-            new Account("Batman", 5000),
-            new Account("Robin", 0),
-            new Account("Joker", 100)
-        };
+            List = HttpContext.Current.Session[StoreKey] as List<Account>;
+            if (List == null)
+            {
+                List = new List<Account>
+                {
+                    new Account("Batman", 5000, "Credit Card number: 1111-2222-3333-4444"),
+                    new Account("Robin", 100)
+                };
+                Save();
+            }
+        }
 
         public static List<Account> ExceptCurrent
         {
-            get { return All.Where(x => x.Username != GetCurrent().Username).ToList(); }
+            get { return List.Where(x => x.Username != GetCurrent().Username).ToList(); }
         }
 
         public static Account Get(string username)
         {
-            return All.FirstOrDefault(x => x.Username == username);
+            return List.FirstOrDefault(x => x.Username == username);
         }
 
         public static Account GetCurrent()
@@ -29,6 +40,23 @@ namespace BatcoinMarket.Business
                 return null;
 
             return Get(HttpContext.Current.User.Identity.Name);
+        }
+
+        public static void Register(string username)
+        {
+            List.Add(new Account(username, 0));
+            Save();
+        }
+
+        public static void Delete(string username)
+        {
+            List.RemoveAll(x => x.Username == username);
+            Save();
+        }
+
+        private static void Save()
+        {
+            HttpContext.Current.Session[StoreKey] = List;
         }
     }
 }

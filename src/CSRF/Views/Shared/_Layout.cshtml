@@ -17,7 +17,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Hello CSRF", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Hello CSRF", "CSRF", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("CSRF", "Csrf", "Home")</li>
+                    <li>@Html.ActionLink("Catch", "Catch", "Home")</li>
+                </ul>
             </div>
         </div>
     </div>

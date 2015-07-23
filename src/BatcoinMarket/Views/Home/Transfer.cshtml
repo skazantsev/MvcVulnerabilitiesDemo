@@ -1,0 +1,28 @@
+﻿@model BatcoinMarket.Models.TransferViewModel
+
+@{
+    ViewBag.Title = "Batcoins transfer";
+}
+
+<div class="jumbotron">
+    <h2>Batcoins transfer</h2>
+    <form action="@Url.Action("Transfer", "Home")" method="POST">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Amount)
+            <div class="form-inline">
+                @Html.TextBoxFor(x => x.Amount, new { @class = "form-control input-lg col-md-6" })
+                @Html.ValidationMessageFor(x => x.Amount, "", new { @class = "text-danger col-md-6" })
+            </div>
+        </div>
+        <br/>
+        <div class="form-group">
+            @Html.LabelFor(x => x.To)
+            <div class="form-inline">
+                @Html.DropDownListFor(x => x.To, Model.GetAccountsListItems(), new { @class = "form-control col-md-6" })
+                @Html.ValidationMessageFor(x => x.To, "", new { @class = "text-danger col-md-6" })
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-lg btn-primary">Confirm identity</button>
+    </form>
+</div>

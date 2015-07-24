@@ -33,20 +33,6 @@ namespace BatcoinMarket.Controllers
             return View(model);
         }
 
-        public ActionResult Store()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Codes()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
         [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult AccountInfo()
@@ -59,7 +45,42 @@ namespace BatcoinMarket.Controllers
 
         public ActionResult GetSensetiveInfo()
         {
-            return Json(new {data = Accounts.GetCurrent().SensetiveInfo}, JsonRequestBehavior.AllowGet);
+            return Json(new { data = Accounts.GetCurrent().SensetiveInfo }, JsonRequestBehavior.AllowGet);
         }
+
+        #region Transfer2
+
+        [HttpGet]
+        public ActionResult Transfer2()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Transfer2(TransferViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var currentAccount = Accounts.GetCurrent();
+            var to = Accounts.Get(model.To);
+            if (currentAccount.Tranfer(model.Amount, to))
+            {
+                return RedirectToAction("Transfer2", "Home");
+            }
+
+            ModelState.AddModelError("Amount", "You don't have this amount of batcoins");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult GetAccount()
+        {
+            return Json(Accounts.ExceptCurrent);
+        }
+
+        #endregion
     }
 }

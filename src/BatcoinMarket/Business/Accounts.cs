@@ -18,6 +18,7 @@ namespace BatcoinMarket.Business
                 List = new List<Account>
                 {
                     new Account("Batman", 5000, "Credit Card number: 1111-2222-3333-4444"),
+                    new Account("Clark Kent", 2000, "I am a superman!"),
                     new Account("Robin", 100)
                 };
                 Save();

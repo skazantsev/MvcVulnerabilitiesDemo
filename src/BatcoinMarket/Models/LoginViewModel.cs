@@ -8,7 +8,7 @@ namespace BatcoinMarket.Models
     {
         public LoginViewModel()
         {
-            Users = Accounts.List;
+            Accounts = Business.Accounts.List;
         }
 
         [Required]
@@ -20,6 +20,6 @@ namespace BatcoinMarket.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        public List<Account> Users { get; private set; }
+        public List<Account> Accounts { get; private set; }
     }
 }

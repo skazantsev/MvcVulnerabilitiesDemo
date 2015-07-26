@@ -33,6 +33,13 @@ namespace BatcoinMarket.Controllers
             return View(model);
         }
 
+        [ValidateInput(false)]
+        public ActionResult Store(string couponCode)
+        {
+            ViewBag.CouponCode = couponCode;
+            return View();
+        }
+
         [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult AccountInfo()

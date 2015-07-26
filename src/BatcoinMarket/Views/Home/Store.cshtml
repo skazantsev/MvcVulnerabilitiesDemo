@@ -1,7 +1,51 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Store";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="jumbotron">
+    <h2>@ViewBag.Title</h2>
+    <div id="coupon"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div><img height="150" src="@Url.Content("~/Content/batarang.jpg")" /></div>
+            <h2 style="width: 302px; text-align: center">$100</h2>
+            <div><button class="btn btn-default" style=" width: 302px;">Buy</button></div>
+        </div>
+        <div class="col-md-4">
+            <div><img height="150" src="@Url.Content("~/Content/batmobile.jpg")" /></div>
+            <h2 style="width: 315px; text-align: center">$200000</h2>
+            <div><button class="btn btn-default" style=" width: 315px;">Buy</button></div>
+        </div>
+        <div class="col-md-4">
+            <div><img height="150" src="@Url.Content("~/Content/batbike.jpg")" /></div>
+            <h2 style="width: 223px; text-align: center">$50000</h2>
+            <div><button class="btn btn-default" style=" width: 223px;">Buy</button></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        var couponCode = '@ViewBag.CouponCode';
+        if (couponCode) {
+            $('#coupon').hide().text(couponCode).fadeIn(1000);
+        }
+    });
+</script>
+
+
+
+
+@*
+    function unicodeEscape(str) {
+        return str.replace(/[\s\S]/g, function(character) {
+            var escape = character.charCodeAt().toString(16),
+                longhand = escape.length > 2;
+            return '\\' + (longhand ? 'u' : 'x') + ('0000' + escape).slice(longhand ? -4 : -2);
+        });
+    }
+
+    console.log(unicodeEscape('\'<&>'))
+
+    HACKED\x3cscript\x3ealert(\x27Hello\x27)\x3c/script\x3e
+*@

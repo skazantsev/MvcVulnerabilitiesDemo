@@ -5,9 +5,13 @@
 
 <div class="jumbotron">
     <ul>
-    @foreach (var entry in log)
-    {
-        <li>@entry</li>
-    }
+        @foreach (var entry in log)
+        {
+            <li>@entry</li>
+        }
     </ul>
+</div>
+
+<div>
+    <img src="@Url.Content("~/Content/hacked.jpg")" alt="cat-hacker" />
 </div>

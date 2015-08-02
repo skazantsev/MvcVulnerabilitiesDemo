@@ -11,7 +11,6 @@
             @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
                 <hr />
                 <div class="col-md-8">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -44,7 +43,7 @@
 
                             @foreach (var account in Model.Accounts)
                             {
-                                    <li>@account.Username - @account.Balance
+                                    <li>@Html.FormatUserName(account)
                                         @Html.ActionLink("✘", "Delete", "Admin", new { username = account.Username }, null)
                                     </li>
 

@@ -37,6 +37,7 @@ namespace BatcoinMarket.Controllers
         public ActionResult Store(string couponCode)
         {
             ViewBag.CouponCode = couponCode;
+            ViewBag.ApplyCoupon = (couponCode ?? "").ToUpper() == "SUPERHERO";
             return View();
         }
 

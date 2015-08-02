@@ -2,33 +2,52 @@
     ViewBag.Title = "Store";
 }
 
-<div class="jumbotron">
+<div id="store" class="jumbotron">
     <h2>@ViewBag.Title</h2>
-    <div id="coupon"></div>
-    <div class="row">
-        <div class="col-md-4">
-            <div><img height="150" src="@Url.Content("~/Content/batarang.jpg")" /></div>
-            <h2 style="width: 302px; text-align: center">$100</h2>
-            <div><button class="btn btn-default" style=" width: 302px;">Buy</button></div>
+    <div id="coupon">Coupon: <span></span></div>
+    <div class="offer-row">
+        <div class="offer">
+            @if (ViewBag.ApplyCoupon)
+            {
+                <div class="discount">-25%</div>
+            }
+            <img src="@Url.Content("~/Content/batarang.jpg")" alt="batarang" />
+            <h2 class="offer-title">
+                @(ViewBag.ApplyCoupon ? "$75" : "$100")
+            </h2>
+            <button class="btn btn-success">Buy</button>
         </div>
-        <div class="col-md-4">
-            <div><img height="150" src="@Url.Content("~/Content/batmobile.jpg")" /></div>
-            <h2 style="width: 315px; text-align: center">$200000</h2>
-            <div><button class="btn btn-default" style=" width: 315px;">Buy</button></div>
+        <div class="offer">
+            @if (ViewBag.ApplyCoupon)
+            {
+                <div class="discount">-50%</div>
+            }
+            <img src="@Url.Content("~/Content/batmobile.jpg")" alt="batmobile" />
+            <h2 class="offer-title">
+                @(ViewBag.ApplyCoupon ? "$100000" : "$200000")
+            </h2>
+            <button class="btn btn-success">Buy</button>
         </div>
-        <div class="col-md-4">
-            <div><img height="150" src="@Url.Content("~/Content/batbike.jpg")" /></div>
-            <h2 style="width: 223px; text-align: center">$50000</h2>
-            <div><button class="btn btn-default" style=" width: 223px;">Buy</button></div>
+        <div class="offer">
+            @if (ViewBag.ApplyCoupon)
+            {
+                <div class="discount">-33.3%</div>
+            }
+            <img src="@Url.Content("~/Content/batbike.jpg")" alt="batbike" />
+            <h2 class="offer-title">
+                @(ViewBag.ApplyCoupon ? "$30000" : "$45000")
+            </h2>
+            <button class="btn btn-success">Buy</button>
         </div>
     </div>
 </div>
 
 <script>
-    $(function() {
+    $(function () {
         var couponCode = '@ViewBag.CouponCode';
         if (couponCode) {
-            $('#coupon').hide().text(couponCode).fadeIn(1000);
+            $('#coupon span').html(couponCode);
+            $('#coupon').fadeIn(1000);
         }
     });
 </script>

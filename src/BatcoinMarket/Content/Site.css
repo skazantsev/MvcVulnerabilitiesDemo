@@ -32,3 +32,35 @@ li a:focus {
     cursor: pointer;
     color: #555555;
 }
+
+#coupon {
+    display:none;
+}
+
+#store .offer-row img {
+    width: 100%;
+}
+
+#store .offer {
+    position: relative;
+    border: 2px solid darkkhaki;
+    padding: 10px;
+    margin: 10px;
+}
+
+#store .offer .discount {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 64px;
+    color: orange
+}
+
+#store button {
+    height: 50px;
+    width: 100%;
+}
+
+#store .offer-title {
+    text-align: center;
+}

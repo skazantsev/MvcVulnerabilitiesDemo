@@ -30,7 +30,12 @@
         </div>
     </div>
     <div class="container body-content">
-        @RenderBody()
+        <div class="col-md-10">
+            @RenderBody()
+        </div>
+        <div class="col-md-2">
+            <img src="@Url.Content("~/Content/batcoin.jpg")" width="500" alt="" />
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/bootstrap")

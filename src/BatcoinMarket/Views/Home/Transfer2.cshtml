@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Batcoins transfer (clien-side version)";
+    ViewBag.Title = "Batcoin transfer (clien-side version)";
 }
 
 <div class="jumbotron">
@@ -55,6 +55,8 @@
             var content = tmpl({ listItems: listItems });
             //console.log(content);
             $('#appRoot').html(content);
+
+            // $('#el').html(username); vs // $('#el').text(username);
         });
     });
 </script>

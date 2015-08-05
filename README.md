@@ -73,9 +73,9 @@ Output:
 ```
 
 ###Server-side XSS
-As it has been said before in ASP.NET MVC every output string is html-encoded.
+As it has been said before in ASP.NET MVC output strings are html-encoded.
 However, it doesn't mean that developers are fully protected against XSS.
-Look at this html helper and its usage:
+Look at the following html helper:
 ``` csharp
 public static class InsecureHtmlHelpers
 {
@@ -116,10 +116,10 @@ public sealed class MvcHtmlString : HtmlString
   // ...
 }
 ```
-ASP.NET MVC outputs MvcHtmlString and any other class implementing IHtmlString without html encoding
-because it has a load of built-in html helpers returning pieces of html which should be rendered without encoding except their content.
+ASP.NET MVC outputs MvcHtmlString and any other class implemented IHtmlString without html encoding
+because it has a load of built-in html helpers returning pieces of html which should be rendered without html encoding.
 
-So what we want to do is to encode only content of div by using a special method *SetInnerText*:
+So what we need to do is to encode only content of div by using a special method *SetInnerText*:
 ``` csharp
 public static class InsecureHtmlHelpers
 {
@@ -132,7 +132,7 @@ public static class InsecureHtmlHelpers
 }
 ```
 
-now output will be:
+Now the output will be:
 ``` html
 <div>&lt;b&gt;John Smith&lt;/b&gt;</div>
 ```

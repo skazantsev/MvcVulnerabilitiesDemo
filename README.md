@@ -136,3 +136,68 @@ Now the output will be:
 ``` html
 <div>&lt;b&gt;John Smith&lt;/b&gt;</div>
 ```
+
+Furthermore, ASP.NET MVC has a built-in HtmlHelper's method *Html.Raw* for rendering strings without encoding which should be used only for trusted data.
+
+###XSS rendering JavaScript
+If you html-encode every string on a page you might feel protected against XSS but it turns out that there is another weak spot when dealing with server-side rendering is rendering JavaScript.
+
+Look at the following piece of code:
+``` csharp
+<script>
+  $(function () {
+    var name = '@Model.Name'; // Model.Name = "<script>alert('Hello XSS')</script>"
+    $('#name').html(name);
+  });
+</script>
+```
+=>
+``` html
+<script>
+  $(function () {
+    var name = '&lt;script&gt;alert('Hello XSS')&lt;/script&gt';
+    $('#name').html(name);
+  });
+</script>
+```
+As you can see the output is html-encoded; however, this code is still vulnerable to XSS.
+By using hexadecimal representation of some characters we can pass a malicious script to Model.Name and it will be ignored by Html.Encode method and interpreted as an html string in browser so we end up with XSS.
+``` csharp
+<script>
+  $(function () {
+    var name = '@Model.Name'; // Model.Name = "\x3cscript\x3ealert(\x27Hello XSS\x27)\x3c/script\x3e"
+    $('#name').html(name);
+  });
+</script>
+```
+=>
+``` html
+<script>
+  $(function () {
+    var name = '\x3cscript\x3ealert(\x27Hello XSS\x27)\x3c/script\x3e';
+    $('#name').html(name); // insert and execute <script>alert('Hello XSS')</script> !!!
+  });
+</script>
+```
+
+To prevent this we should use @Ajax.JavaScriptStringEncode (just a wrapper for HttpUtility.JavaScriptStringEncode) which will correctly encode backward slashes.
+The following code is secure to this type of vulnerability:
+``` csharp
+<script>
+  $(function () {
+    var name = '@Ajax.JavaScriptStringEncode(Model.Name)'; // Model.Name = "\x3cscript\x3ealert(\x27Hello XSS\x27)\x3c/script\x3e"
+    $('#name').html(name);
+  });
+</script>
+```
+=>
+``` html
+<script>
+  $(function () {
+    var name = '\\x3cscript\\x3ealert(\\x27Hello\\x27)\\x3c/script\\x3e';
+    $('#name').html(name);
+  });
+</script>
+```
+
+One more important point is that in the aforementioned scenario we should use $.text instead of $.html, we'll talk about that in the next section.

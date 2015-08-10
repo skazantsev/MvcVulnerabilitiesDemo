@@ -200,4 +200,4 @@ The following code is secure to this type of vulnerability:
 </script>
 ```
 
-One more important point is that in the aforementioned scenario we should use $.text instead of $.html, we'll talk about that in the next section.
+One more important point is that in the aforementioned scenario we should use *text()* instead of *html()*, we'll talk about that in the next section.

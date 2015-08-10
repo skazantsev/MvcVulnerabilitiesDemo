@@ -201,3 +201,59 @@ The following code is secure to this type of vulnerability:
 ```
 
 One more important point is that in the aforementioned scenario we should use *text()* instead of *html()*, we'll talk about that in the next section.
+
+###Client-side XSS
+Client-side rendering has become really popular due to modern JavaScript libraries and frameworks allowing creating layouts on the fly in browser rather that rendering it on the server side.
+However, developers have to use those libraries carefully and don't forget about security issues they might cause.
+
+
+First of all, it's important to distinguish methods for working with html elements and methods dealing with text.
+For example, in a popular JavaScript framework **jQuery** there are methods *text()* and *html()*.
+The *text()* method html-escapes input and so should be used for inserting data.
+Contrary, use *html()* when you want to build parts of the DOM (Document Object Model), but make sure that you still escape content of html elements.
+
+To illustrate these points:
+``` JavaScript
+// WRONG
+var userData = // get the user data from an untrusted source
+$('#el').html(userData); // XSS!!!
+```
+``` html
+<div id="el">
+  <script>alert('Hello XSS')</script> // will be executed by browser
+</div>
+```
+
+Use *text()*:
+``` JavaScript
+// CORRECT
+var userData = // get the user data from an untrusted source
+$('#el').text(userData);
+```
+``` html
+<div id="el">
+  &lt;script&gt;alert('Hello XSS')&lt;/script&gt; // will be displayed as text
+</div>
+```
+
+Another significant caution is working with client-side templates.
+Usually they're not safe by default and it's important to check documentation and use the correct syntax for XSS prevention.
+
+It seems so wrong that the majority of tutorials for learning JavaScript templates use a syntax without html-encoding causing this code to be copied & pasted to real projects and leading to security breaches.
+
+Let's illustrate it on the example of underscore.js templates:
+``` html
+<!-- WRONG -->
+<script type="text/template" id="myTmpl">
+  <div><%= item.text %></div> <!-- XSS -->
+</script>
+```
+
+``` html
+<!-- CORRECT -->
+<script type="text/template" id="myTmpl">
+  <div><%- item.text %></div>
+</script>
+```
+
+Developers should consider using the safe syntax wherever it's possible (it may vary from library to library so make sure you've checked the documentation first).

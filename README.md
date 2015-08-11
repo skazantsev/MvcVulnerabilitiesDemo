@@ -257,3 +257,14 @@ Let's illustrate it on the example of underscore.js templates:
 ```
 
 Developers should consider using the safe syntax wherever it's possible (it may vary from library to library so make sure you've checked the documentation first).
+
+###Best practices for prevention XSS in ASP.NET MVC
+* Escape all the output strings by default
+* Escape values in cookies and headers
+* Generally, avoid generating html in plain C# classes, use razor helpers instead
+* Use *html()* and *text()* jQuery methods appropriately
+* Consider using [HtmlSanitizer](https://github.com/mganss/HtmlSanitizer) for cleaning html
+* Know the difference between *InnerHtml* and *SetInnerText()* in html helpers
+* Use *Ajax.JavaScriptStringEncode()* before rendering values in JavaScript on the server side
+* Read [OWASP guide](https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet)
+

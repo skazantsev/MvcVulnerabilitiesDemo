@@ -268,3 +268,42 @@ Developers should consider using the safe syntax wherever it's possible (it may 
 * Use *Ajax.JavaScriptStringEncode()* before rendering values in JavaScript on the server side
 * Read [OWASP guide](https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet)
 
+## CSRF
+CSRF or Cross-Site Request Forgery is one of the least underestimated kind of attack in web.
+It can't be prevented by standard tools in browsers or OS and many web developers have never heard about it.
+Moreover, the damage caused by this attack can be really huge in some scenarios.
+
+### How does it work?
+1. A user is signed in to a VULNERABLE-SITE1.COM
+2. The user visits a MALICIOUS-SITE2.COM (there are many ways to get the user visit the malicious site)
+3. MALICIOUS-SITE2.COM silently executes JavaScript making a request to VULNERABLE-SITE1.COM on-behalf of the user by posting a form with malicious parameters.
+4. The victim's browser sends a request from the malicious site to the VULNERABLE-SITE1.COM with all needed cookies and malicious parameters
+5. The request successfully executed by a hacker on-behalf of the user
+
+An example:
+``` html
+<!-- VULNERABLE-SITE1.COM -->
+<!-- a simple form for transferring money. What could possibly go wrong? -->
+<form action="/Transfer" method="POST">
+  <input name="credit-card-no" type="text" />
+  <input name="amount" type="text" />
+  <button type="submit">SUBMIT</button>
+</form>
+```
+
+``` html
+<!-- MALICIOUS-SITE2.COM -->
+<!-- the form's action points to the vulnerable site -->
+<form id="myForm" action="https://VULNERABLE-SITE1.COM/Transfer" method="POST" style="display:none;">
+  <!-- malicious data -->
+  <input name="credit-card-no" type="hidden" value="HACKER-CREDIT-CARD-NO" />
+  <input name="amount" type="hidden" value="1000" />
+</form>
+
+<!-- auto-post the form when the page is loaded -->
+<script>
+  document.getElementById("myForm").submit();
+</script>
+```
+When a user visits MALICIOUS-SITE2.COM it will transfer $1000 from the user's account to any credit card specified by a hacker!
+This type of attack can be applied to any type of site requiring authentication (blogs, social networks, online banks, etc.) and almost for any action (posting a comment, changing a password, following a friend)

@@ -307,3 +307,44 @@ An example:
 ```
 When a user visits MALICIOUS-SITE2.COM it will transfer $1000 from the user's account to any credit card specified by a hacker!
 This type of attack can be applied to any type of site requiring authentication (blogs, social networks, online banks, etc.) and almost for any action (posting a comment, changing a password, following a friend)
+
+### CSRF protection
+The method of protection against CSRF is fairly simple and it's supported by many web frameworks.
+Rendering a form, a special token should be put in a hidden field and in user's cookies.
+When the user submits that form to the server the value in the posted data will be compared to the value in the cookies and the request will be executed only if the values are equal.
+
+A token is usually called Anti CSRF token and implementing this mechanism by itself might be tricky and prone to security vulnerabilities.
+Hopefully, ASP.NET MVC has a built-in support for it by the html helper's extension *Html.AntiForgeryToken* and the attribute for verifying tokens - *ValidateAntiForgeryToken*.
+
+We can protect our form as follows:
+``` csharp
+@using (Html.BeginForm("Tranfer"))
+{
+    @Html.AntiForgeryToken()
+    @Html.TextBoxFor(x => x.CreditCardNo)
+    @Html.TextBoxFor(x => x.Amount)
+    <button type="submit">SUBMIT</button>
+}
+
+``` csharp
+[ValidateAntiForgeryToken]
+public ActionResult Transfer(TransferViewModel model)
+{
+    // ...
+}
+```
+
+Now if a hacker gets a victim to submit malicious form the server will return the 500 error because the hacker doesn't know the valid token value.
+
+### CSRF and AJAX requests
+What about AJAX requests? The same-origin policy disallows execution of AJAX requests to another domain so we don't need any tokens schmokens, right?
+
+Yes, you need. The same-origin policy certainly prevents CSRF from another domains (unless you [allowed them](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing));
+however, if your site is exploited to XSS the same-origin policy can be bypassed and all your AJAX requests will be vulnerable to CSRF attacks.
+
+So you have to use CSRF tokens for AJAX requests.
+
+### Best practices for prevention CSRF in ASP.NET MVC
+* Use Anti CSRF tokens for unsafe actions
+* Use Anti CSRF tokens for AJAX requests
+* Use built-in mechanisms, don't reinvent the wheel

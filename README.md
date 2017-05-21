@@ -1,20 +1,20 @@
-# Security fundamentals of web applications
+# ASP.NET - security fundamentals
 
 Statistics shows that most of security breaches occur due to defects in software, so it is software developers who should be aware of security vulnerabilities and ways for detecting and preventing them.
 
 This project is built for a web-security training at [Kaspersky Lab](http://www.kaspersky.com/about).
-It demonstrates some fundamentals of web security by the example of simple ASP.NET MVC application which is vulnerable to several attacks.
+It demonstrates some fundamentals of web security by the example of a simple ASP.NET MVC application which is vulnerable to several attacks.
 
-##XSS
+## XSS
 According to wikipedia cross-site scripting is accounted for 84% of security vulnerabilities.
-Almost every server-side framework has built-in tools for preventing XSS, however just some of them are secure by default.
+Almost every server-side framework has built-in tools for preventing XSS; however, just some of them are secure by default.
 Moreover, due to the growth in adoption of JavaScript and the explosion of client-side libraries, many of which are not secure by default, the number of XSS vulnerabilities will grow even further.
 
 Even though ASP.NET MVC was developed as secure by default, ASP.NET developers must have awareness of the underlying mechanisms and use them properly.
 
-###Explaining HTML-encoding
+### Explaining HTML-encoding
 
-ASP.NET MVC Razor engine html encodes strings by default:
+The ASP.NET MVC's Razor engine html-encodes strings by default:
 ``` csharp
 @{
     var text = "<HTML> is awesome!";
@@ -50,7 +50,7 @@ Output:
 ```
 <hr>
 
-That means that in unfavourable scenarios some malicious code can be inserted and executed by a victim's browser
+It means that in unfavourable scenarios some malicious code can be inserted and executed by a victim's browser
 ``` csharp
 @{
     var text = "<script>var cookies = document.cookie; // send them to a hacker </script>";
@@ -72,8 +72,8 @@ Output:
 </div>
 ```
 
-###Server-side XSS
-As it has been said before in ASP.NET MVC output strings are html-encoded.
+### Server-side XSS
+As it has been said before, in ASP.NET MVC output strings are html-encoded.
 However, it doesn't mean that developers are fully protected against XSS.
 Look at the following html helper:
 ``` csharp
@@ -88,7 +88,7 @@ public static class InsecureHtmlHelpers
 }
 ```
 
-Invoking this helper on a page
+Invoking this helper on a page:
 ``` csharp
 @Html.FormatAccount("<b>John Smith</b>")
 ```
@@ -119,7 +119,7 @@ public sealed class MvcHtmlString : HtmlString
 ASP.NET MVC outputs MvcHtmlString and any other class that implements IHtmlString without html encoding
 because it has a load of built-in html helpers returning pieces of html which should be rendered without html encoding.
 
-So what we need to do is to encode only content of div by using a special method *SetInnerText*:
+So, what we need to do is to encode only content of div by using a special method *SetInnerText*:
 ``` csharp
 public static class InsecureHtmlHelpers
 {
@@ -139,8 +139,8 @@ Now the output will be:
 
 Furthermore, ASP.NET MVC has a built-in HtmlHelper's method *Html.Raw* for rendering strings without encoding which should be used only for trusted data.
 
-###XSS rendering JavaScript
-If you html-encode every string on a page you might feel protected against XSS but it turns out that there is another weak spot when dealing with server-side rendering is rendering JavaScript code.
+### XSS rendering JavaScript
+If you html-encode every string on a page you might feel protected against XSS but it turns out that there is another weak spot when dealing with server-side rendering which is rendering JavaScript code.
 
 Look at the following piece of code:
 ``` csharp
@@ -202,10 +202,9 @@ The following code is secure to this type of vulnerability:
 
 One more important point is that in the aforementioned scenario we should use *text()* instead of *html()*, we'll talk about that in the next section.
 
-###Client-side XSS
+### Client-side XSS
 Client-side rendering has become really popular due to modern JavaScript libraries and frameworks allowing creating layouts on the fly in browser rather that rendering it on the server side.
 However, developers have to use those libraries carefully and don't forget about security issues they might cause.
-
 
 First of all, it's important to distinguish methods for working with html elements and methods dealing with text.
 For example, in a popular JavaScript framework **jQuery** there are methods *text()* and *html()*.
@@ -256,9 +255,9 @@ Let's illustrate it on the example of underscore.js templates:
 </script>
 ```
 
-Developers should consider using the safe syntax wherever it's possible (it may vary from library to library so make sure you've checked the documentation first).
+Developers should consider using the safe syntax wherever it's possible (it may vary from library to library so, make sure you've checked the documentation first).
 
-###Best practices for prevention XSS in ASP.NET
+### Best practices for prevention XSS in ASP.NET
 * Escape all the output strings by default
 * Escape values in cookies and headers
 * Generally, avoid generating html in plain C# classes, use razor helpers instead

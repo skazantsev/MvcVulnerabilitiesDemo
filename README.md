@@ -2,7 +2,6 @@
 
 Statistics shows that most of security breaches occur due to defects in software, so it is software developers who should be aware of security vulnerabilities and ways for detecting and preventing them.
 
-This project is built for a web-security training at [Kaspersky Lab](http://www.kaspersky.com/about).
 It demonstrates some fundamentals of web security by the example of a simple ASP.NET MVC application which is vulnerable to several attacks.
 
 ## XSS
@@ -347,3 +346,6 @@ So you have to use CSRF tokens for AJAX requests.
 * Use Anti CSRF tokens for unsafe actions
 * Use Anti CSRF tokens for AJAX requests
 * Use built-in mechanisms, don't reinvent the wheel
+
+## License
+The code and text is licensed under the MIT License. See [LICENSE.txt](License.txt) for more details.

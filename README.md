@@ -348,4 +348,4 @@ So you have to use CSRF tokens for AJAX requests.
 * Use built-in mechanisms, don't reinvent the wheel
 
 ## License
-The code and text is licensed under the MIT License. See [LICENSE.txt](License.txt) for more details.
+The code and text is licensed under the MIT License. See [LICENSE.txt](LICENSE.txt) for more details.
